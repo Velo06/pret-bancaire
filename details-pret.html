@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Prêt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #333;
+        }
+        .pret-card, .remboursements-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+        .info-field {
+            margin-bottom: 12px;
+            display: flex;
+        }
+        .field-label {
+            font-weight: bold;
+            width: 200px;
+            color: #7f8c8d;
+        }
+        .field-value {
+            flex: 1;
+        }
+        .action-button {
+            margin-top: 25px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+        .action-button:hover {
+            background-color: #2980b9;
+        }
+        .validate-btn {
+            background-color: #28a745;
+        }
+        .validate-btn:hover {
+            background-color: #218838;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+        }
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #f1f7fd;
+        }
+        .montant {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .modal-actions {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .modal-btn {
+            padding: 8px 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .modal-confirm {
+            background-color: #28a745;
+            color: white;
+        }
+        .modal-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Détails du Prêt</h1>
+    
+    <div id="pret-details" class="pret-card">
+        <!-- Les détails du prêt seront chargés ici -->
+    </div>
+
+    <div id="actions-section" style="display: none;">
+        <button id="validate-btn" class="action-button validate-btn">Valider le prêt</button>
+        <button id="reject-btn" class="action-button reject-btn">Rejeter le prêt</button>
+        <button onclick="window.history.back()" class="action-button">Retour</button>
+    </div>
+
+    <div class="remboursements-section">
+        <h2>Historique des remboursements</h2>
+        <table id="remboursements-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">Chargement en cours...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de confirmation -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Confirmation</h3>
+            <p id="modal-message">Voulez-vous vraiment valider ce prêt ?</p>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="modal-btn modal-cancel">Annuler</button>
+                <button id="modal-confirm" class="modal-btn modal-confirm">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiBase = "http://localhost:8000/ws";
+        const pretId = new URLSearchParams(window.location.search).get('id');
+        let currentPret = null;
+
+        // Fonction principale de chargement
+        async function chargerDetailsPret() {
+            if (!pretId) {
+                showError('Prêt non trouvé');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiBase}/prets/${pretId}`);
+                if (!response.ok) throw new Error('Erreur de chargement');
+                
+                currentPret = await response.json();
+                renderPretDetails(currentPret);
+                renderRemboursements(currentPret.historique_remboursements);
+                setupActions();
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Une erreur est survenue lors du chargement des détails du prêt');
+            }
+        }
+
+        // Afficher les détails du prêt
+        function renderPretDetails(pret) {
+            const detailsDiv = document.getElementById('pret-details');
+            
+            detailsDiv.innerHTML = `
+                <h2>Informations du prêt</h2>
+                <div class="info-field">
+                    <span class="field-label">ID Prêt:</span>
+                    <span class="field-value">${pret.id}</span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Client:</span>
+                    <span class="field-value">${pret.client_nom}</span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Type de prêt:</span>
+                    <span class="field-value">${pret.type_pret} (${(pret.taux_interet_annuel * 100).toFixed(2)}%)</span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Montant:</span>
+                    <span class="field-value montant">${formatMoney(pret.montant_emprunt)} Ar</span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Date début:</span>
+                    <span class="field-value">${formatDate(pret.date_debut)}</span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Date fin:</span>
+                    <span class="field-value">${pret.date_fin ? formatDate(pret.date_fin) : 'N/A'}</span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Statut:</span>
+                    <span class="field-value">
+                        <span class="status-badge ${getStatusClass(pret.statut)}">${pret.statut}</span>
+                    </span>
+                </div>
+                <div class="info-field">
+                    <span class="field-label">Date création:</span>
+                    <span class="field-value">${formatDate(pret.date_creation)}</span>
+                </div>
+            `;
+        }
+
+        // Afficher l'historique des remboursements
+        function renderRemboursements(remboursements) {
+            const tbody = document.querySelector("#remboursements-table tbody");
+            
+            if (remboursements.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">Aucun remboursement enregistré</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = remboursements.map(remb => `
+                <tr>
+                    <td>${formatDateTime(remb.date_remboursement)}</td>
+                    <td class="montant">${formatMoney(remb.montant_rembourse)} Ar</td>
+                </tr>
+            `).join('');
+        }
+
+        // Configurer les boutons d'action
+        function setupActions() {
+            const actionsSection = document.getElementById('actions-section');
+            
+            // Afficher seulement si le prêt est en attente
+            if (currentPret.id_etat_validation === 1) { // 1 = En attente
+                actionsSection.style.display = 'block';
+                
+                document.getElementById('validate-btn').addEventListener('click', () => {
+                    showConfirmModal(
+                        'Valider le prêt',
+                        'Voulez-vous vraiment valider ce prêt ?',
+                        validerPret
+                    );
+                });
+                
+                document.getElementById('reject-btn').addEventListener('click', () => {
+                    showConfirmModal(
+                        'Rejeter le prêt',
+                        'Voulez-vous vraiment rejeter ce prêt ?',
+                        rejeterPret
+                    );
+                });
+            }
+        }
+
+        // Valider le prêt
+        async function validerPret() {
+            try {
+                const response = await fetch(`${apiBase}/prets/${pretId}/valider`, {
+                    method: 'PUT'
+                });
+                
+                if (!response.ok) throw new Error('Échec de la validation');
+                
+                const result = await response.json();
+                alert(result.message);
+                chargerDetailsPret(); // Recharger les données
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue lors de la validation');
+            }
+        }
+
+        // Rejeter le prêt (à implémenter)
+        async function rejeterPret() {
+            // Implémentation similaire à validerPret()
+            alert('Fonctionnalité de rejet à implémenter');
+        }
+
+        // Fonctions utilitaires
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR');
+        }
+
+        function formatDateTime(dateTimeString) {
+            if (!dateTimeString) return 'N/A';
+            const date = new Date(dateTimeString);
+            return date.toLocaleString('fr-FR');
+        }
+
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('fr-FR').format(amount);
+        }
+
+        function getStatusClass(status) {
+            const statusMap = {
+                'en attente': 'status-pending',
+                'validé': 'status-approved',
+                'rejeté': 'status-rejected'
+            };
+            return statusMap[status.toLowerCase()] || '';
+        }
+
+        function showError(message) {
+            document.getElementById('pret-details').innerHTML = `
+                <div class="error">${message}</div>
+            `;
+        }
+
+        // Gestion de la modal de confirmation
+        function showConfirmModal(title, message, confirmCallback) {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            
+            const confirmBtn = document.getElementById('modal-confirm');
+            confirmBtn.onclick = function() {
+                confirmCallback();
+                modal.style.display = 'none';
+            };
+            
+            document.getElementById('modal-cancel').onclick = function() {
+                modal.style.display = 'none';
+            };
+            
+            modal.style.display = 'block';
+        }
+
+        // Fermer la modal si on clique en dehors
+        window.onclick = function(event) {
+            const modal = document.getElementById('confirm-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Lancement au chargement
+        window.onload = chargerDetailsPret;
+    </script>
+</body>
+</html>

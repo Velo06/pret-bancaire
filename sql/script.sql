@@ -84,7 +84,7 @@ CREATE TABLE historique_remboursement (
   pret_id INT NOT NULL,
   montant_rembourse DECIMAL(15,2) NOT NULL,
   date_remboursement DATETIME DEFAULT CURRENT_TIMESTAMP,
-  
+  etat_remboursement BOOLEAN DEFAULT FALSE,
   CONSTRAINT fk_remboursement_pret FOREIGN KEY (pret_id) REFERENCES pret(id) ON DELETE CASCADE
 );
 
@@ -120,3 +120,42 @@ INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 (1, 'En attente'),
 (2, 'Validé'),
 (3, 'Rejeté');
+
+-- 1. Prêt Personnel - 5 000 000 Ar sur 36 mois
+INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
+VALUES (
+    1, -- id du client Rakoto Jean
+    1, -- Prêt Personnel
+    5000000,
+    NOW(),
+    DATE_ADD(NOW(), INTERVAL 36 MONTH),
+    1, -- En attente
+    NOW()
+);
+
+-- 2. Prêt Étudiant - 3 000 000 Ar sur 24 mois
+INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
+VALUES (
+    1,
+    3, -- Prêt Étudiant
+    3000000,
+    NOW(),
+    DATE_ADD(NOW(), INTERVAL 24 MONTH),
+    1,
+    NOW()
+);
+
+-- 3. Micro-crédit - 800 000 Ar sur 10 mois
+INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
+VALUES (
+    1,
+    4, -- Micro-crédit
+    800000,
+    NOW(),
+    DATE_ADD(NOW(), INTERVAL 10 MONTH),
+    1,
+    NOW()
+);
+
+INSERT INTO etablissement_financier (solde_actuelle) VALUES (1000000000);
+ALTER TABLE pret MODIFY montant_emprunt DECIMAL(15,2);

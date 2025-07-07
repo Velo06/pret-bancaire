@@ -14,5 +14,7 @@ require 'db.php';
 
 require 'routes/etudiant_routes.php';
 require 'routes/employes_routes.php';
+require 'routes/clients_routes.php'; 
+require 'routes/prets_routes.php';
 
 Flight::start();
