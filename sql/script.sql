@@ -66,6 +66,8 @@ CREATE TABLE historique_remboursement (
   CONSTRAINT fk_remboursement_pret FOREIGN KEY (pret_id) REFERENCES pret(id) ON DELETE CASCADE
 );
 
+ALTER TABLE `clients` ADD `revenu` DECIMAL(30,3) NOT NULL AFTER `statut`;
+
 INSERT INTO type_pret (nom, taux_interet_annuel, duree_max_mois, montant_max_pres) VALUES
 ('Prêt Personnel', 0.0500, 60, 10000000),
 ('Prêt Immobilier', 0.0350, 240, 100000000),
@@ -95,3 +97,7 @@ INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 (1, 'En attente'),
 (2, 'Validé'),
 (3, 'Rejeté');
+
+INSERT INTO etat_validation (id, nom_etat_validation) VALUES
+(4, 'Remboursé partiellement'),
+(5, 'Remboursé totalement');

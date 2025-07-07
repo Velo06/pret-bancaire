@@ -8,8 +8,10 @@
   <body>
     <p id="etat_fond_actuelle"></p>
     <div>
-      <input type="number" id="montant" placeholder="montant" />
-      <button onclick="ajoutFond()">Mettre a jour fond</button>
+      <input type="number" id="pret_id" name="pret_id" placeholder="pret_id" />
+      <input type="text" id="montant" name="montant" placeholder="montant" />
+
+      <button onclick="rembourser()">Rembourser</button>
     </div>
 
     <script>
@@ -30,32 +32,27 @@
         xhr.send(data);
       }
 
-      function ajoutFond() {
+      function rembourser() {
+        const pretId = document.getElementById("pret_id").value;
         const montant = document.getElementById("montant").value;
-        const data = `montant=${encodeURIComponent(montant)}`;
+        const data = `
+                      montant=${encodeURIComponent(montant)}
+                      &pret_id=${pretId}
+                    `;
 
-        ajax("POST", "/creation_fond", data, (response) => {
+        ajax("POST", "/remboursement", data, (response) => {
           alert(response.message);
-          console.log(response.message)
+          console.log(response.message);
           resetForm();
           etat_fond_actuelle();
         });
       }
 
-      function etat_fond_actuelle() {
-        ajax("GET", "/etat_fond", null, (data) => {
-          const soldeElement = document.querySelector("#etat_fond_actuelle");
-          soldeElement.innerHTML = data.solde_actuelle + " Ar";
-        });
-      }
-
       function resetForm() {
+        document.getElementById("pret_id").value = "";
         document.getElementById("montant").value = "";
       }
 
-      window.onload = () => {
-        etat_fond_actuelle();
-      };
     </script>
   </body>
 </html>
