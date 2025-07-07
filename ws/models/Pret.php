@@ -48,4 +48,9 @@ class Pret {
         $stmt->execute([$pretId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function calculerAssuranceMensuelle($montant, $tauxAssurance) {
+        $assurance = $montant * $tauxAssurance;   
+        return $assurance / 12;
+    }
 }

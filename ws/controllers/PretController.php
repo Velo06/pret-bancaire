@@ -46,15 +46,21 @@ class PretController {
                 throw new Exception('Échec de la mise à jour du statut');
             }
 
+            $dateDebut = new DateTime($pret['date_debut']);
+            $dateFin = new DateTime($pret['date_fin']);
             $montant = (float)$pret['montant_emprunt'];
             $taux = (float)$pret['taux_interet_annuel'];
-            $duree = (int)$pret['duree_max_mois'];
+            $interval = $dateDebut->diff($dateFin);
+            $dureeMois = $interval->y * 12 + $interval->m;
+        
+        // Si la durée est inférieure à 1 mois, on met au moins 1 mois
+        $dureeMois = max(1, $dureeMois); 
             
             Rembourssement::planifierRemboursements(
                 $pretId,
                 $montant,
                 $taux,
-                $duree
+                $dureeMois
             );
     
             $db->commit();

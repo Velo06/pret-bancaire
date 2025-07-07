@@ -159,3 +159,20 @@ VALUES (
 
 INSERT INTO etablissement_financier (solde_actuelle) VALUES (1000000000);
 ALTER TABLE pret MODIFY montant_emprunt DECIMAL(15,2);
+ALTER TABLE pret ADD COLUMN taux_assurance_annuel DECIMAL(5,2) DEFAULT 0;
+
+INSERT INTO pret (
+  client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation,taux_assurance_annuel
+)
+VALUES (
+  2,                -- client id
+  3,                -- type_pret_id (Prêt Étudiant)
+  3000000,          -- montant_emprunt
+  NOW(),            -- date_debut
+  DATE_ADD(NOW(), INTERVAL 48 MONTH),  -- date_fin (4 ans plus tard)
+  1,                -- id_etat_validation (1 = En attente)
+  NOW(),
+  0.02
+);
+
+ALTER TABLE pret ADD COLUMN delai_premier_remboursement_mois INT DEFAULT 0;

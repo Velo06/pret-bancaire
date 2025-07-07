@@ -151,6 +151,22 @@
             background-color: #6c757d;
             color: white;
         }
+
+        .status {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .status.paid {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.unpaid {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
@@ -173,6 +189,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Montant</th>
+                    <th>Etat</th>
                 </tr>
             </thead>
             <tbody>
@@ -275,8 +292,11 @@
 
             tbody.innerHTML = remboursements.map(remb => `
                 <tr>
-                    <td>${formatDateTime(remb.date_remboursement)}</td>
+                    <td>${formatDate(remb.date_remboursement)}</td>
                     <td class="montant">${formatMoney(remb.montant_rembourse)} Ar</td>
+                    <td class="status ${remb.etat_remboursement === 1 ? 'paid' : 'unpaid'}">
+                        ${remb.etat_remboursement === 1 ? 'Payé' : 'Non payé'}
+                    </td>
                 </tr>
             `).join('');
         }
