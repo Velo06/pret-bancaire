@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestion des étudiants</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      input,
+      button {
+        margin: 5px;
+        padding: 5px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gestion des étudiants</h1>
+
+    <div>
+      <!-- ID du prêt (caché) pour modification future -->
+      <input type="hidden" id="id" />
+
+      <!-- ID du client -->
+      <input
+        type="number"
+        id="clientId"
+        name="clientId"
+        placeholder="ID Client"
+      />
+
+      <!-- Sélection du type de prêt -->
+      <select name="type_pret_id" id="type_pret_id">
+        <option value="">-- Choisir un type de prêt --</option>
+      </select>
+
+      <!-- Montant emprunté -->
+      <input
+        type="number"
+        id="montant_emprunt"
+        placeholder="Montant emprunté"
+      />
+
+      <!-- Date de début -->
+      <input type="date" id="date_debut" placeholder="Date de début" />
+
+      <button onclick="ajouterPret()">Ajouter / Modifier Prêt</button>
+    </div>
+
+    <script>
+      const apiBase = "http://localhost:8000/ws";
+
+      function ajax(method, url, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, apiBase + url, true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            callback(JSON.parse(xhr.responseText));
+          }
+        };
+        xhr.send(data);
+      }
+
+      function chargerSelects() {
+        ajax("GET", "/type_pret", null, (types) => {
+          const select = document.getElementById("type_pret_id");
+          select.innerHTML =
+            '<option value="">-- Choisir un type de prêt --</option>';
+          types.forEach((t) => {
+            const option = document.createElement("option");
+            option.value = t.id;
+            option.text = `${t.nom} - Max ${t.montant_max_pres} Ar`;
+            select.appendChild(option);
+          });
+        });
+      }
+
+      window.onload = () => {
+        chargerSelects();
+      };
+
+      function ajouterPret() {
+        const clientId = document.getElementById("clientId").value;
+        const typePretId = document.getElementById("type_pret_id").value;
+        const montant = document.getElementById("montant_emprunt").value;
+        const dateDebut = document.getElementById("date_debut").value;
+
+        const data = `client=${encodeURIComponent(
+          clientId
+        )}&type_pret_id=${encodeURIComponent(
+          typePretId
+        )}&montant_emprunt=${encodeURIComponent(
+          montant
+        )}&date_debut=${encodeURIComponent(dateDebut)}`;
+
+        ajax("POST", "/creation_pret", data, (response) => {
+          alert(response.message);
+          resetForm();
+        });
+      }
+    </script>
+  </body>
+</html>

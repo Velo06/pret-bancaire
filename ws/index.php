@@ -78,4 +78,31 @@ Flight::route('POST /creation_fond', function () {
     }
 });
 
+// ------------------ pres
+Flight::route('POST /creation_pret', function () {
+    $data = Flight::request()->data;
+    $db = getDB();
+
+    // Par défaut, état 1 = en attente
+    $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, id_etat_validation, date_creation)
+                          VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([
+        $data->client,
+        $data->type_pret_id,
+        $data->montant_emprunt,
+        $data->date_debut,
+        1 ,// en attente
+    ]);
+
+    Flight::json(['message' => 'Prêt créé', 'id' => $db->lastInsertId()]);
+});
+
+// ------------------ Type pres
+Flight::route('GET /type_pret', function () {
+    $db = getDB();
+    $stmt = $db->query("SELECT * FROM type_pret");
+    Flight::json($stmt->fetchAll(PDO::FETCH_ASSOC));
+});
+
+
 Flight::start();
