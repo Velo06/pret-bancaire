@@ -48,4 +48,12 @@ Flight::route('DELETE /etudiants/@id', function($id) {
     Flight::json(['message' => 'Étudiant supprimé']);
 });
 
+Flight::route('POST /type-pret', function() {
+    $data = Flight::request()->data;
+    $db = getDB();
+    $stmt = $db->prepare("INSERT INTO type_pret (nom, taux_interet_annuel, duree_max_mois, montant_max_emprunt) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$data->nom, $data->tauxInteret, $data->dureeMax, $data->montantMax]);
+    Flight::json(['message' => 'Type de prêt ajouté', 'id' => $db->lastInsertId()]);
+});
+
 Flight::start();
