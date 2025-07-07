@@ -35,6 +35,10 @@
             <label for="date_debut">Date de début *</label>
             <input type="date" id="date_debut" class="form-control-custom" required />
           </div>
+          <div class="form-group">
+            <label for="date_fin">Date de fin *</label>
+            <input type="date" id="date_fin" class="form-control-custom" required />
+          </div>
         </div>
 
         <div class="form-actions">
@@ -78,8 +82,9 @@
         const typePretId = document.getElementById("type_pret_id").value;
         const montant = document.getElementById("montant_emprunt").value;
         const dateDebut = document.getElementById("date_debut").value;
+        const dateFin = document.getElementById("date_fin").value;
 
-        const data = `client=${encodeURIComponent(clientId)}&type_pret_id=${encodeURIComponent(typePretId)}&montant_emprunt=${encodeURIComponent(montant)}&date_debut=${encodeURIComponent(dateDebut)}`;
+        const data = `client=${encodeURIComponent(clientId)}&type_pret_id=${encodeURIComponent(typePretId)}&montant_emprunt=${encodeURIComponent(montant)}&date_debut=${encodeURIComponent(dateDebut)}&date_fin=${encodeURIComponent(dateFin)}`;
 
         ajax("POST", "/creation_pret", data, (response) => {
           alert(response.message);
@@ -92,6 +97,7 @@
         document.getElementById("type_pret_id").value = "";
         document.getElementById("montant_emprunt").value = "";
         document.getElementById("date_debut").value = "";
+        document.getElementById("date_fin").value = ""
       }
 
       window.onload = () => {

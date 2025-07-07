@@ -9,6 +9,14 @@ class Pret
         return $stmt->fetchColumn();
     }
 
+    public static function getPretById($id)
+    {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT * FROM pret WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetchColumn();
+    }
+
     public static function updateStatut($pretId, $newStatutId)
     {
         $db = getDB();
@@ -49,11 +57,11 @@ class Pret
         return $stmt->fetchColumn();
     }
 
-    public static function creerPret($db, $client, $typePretId, $montant, $dateDebut)
+    public static function creerPret($db, $client, $typePretId, $montant, $dateDebut, $dateFin)
     {
-        $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, id_etat_validation, date_creation)
-                              VALUES (?, ?, ?, ?, 1, NOW())");
-        $stmt->execute([$client, $typePretId, $montant, $dateDebut]);
+        $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, id_etat_validation, date_creation, date_fin)
+                              VALUES (?, ?, ?, ?, 1, NOW(), ?)");
+        $stmt->execute([$client, $typePretId, $montant, $dateDebut, $dateFin]);
         return $db->lastInsertId();
     }
 

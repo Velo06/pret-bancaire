@@ -19,6 +19,6 @@ require  'routes/pret_routes.php';
 require 'routes/remboursement_routes.php';
 require 'routes/TypePret_route.php';
 require 'routes/employes_routes.php';
-
+require 'routes/Interet_routes.php';
 
 Flight::start();

@@ -32,7 +32,7 @@ class PretController
             return;
         }
 
-        $pretId = Pret::creerPret($db, $data->client, $data->type_pret_id, $data->montant_emprunt, $data->date_debut);
+        $pretId = Pret::creerPret($db, $data->client, $data->type_pret_id, $data->montant_emprunt, $data->date_debut, $data->date_fin);
         Pret::mettreAJourSolde($db, $data->montant_emprunt);
 
         Flight::json(['message' => 'Prêt créé avec succès', 'id' => $pretId]);
