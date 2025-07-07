@@ -56,8 +56,8 @@
     </table>
 
     <script>
-      const apiBase = "http://localhost:8000";
-
+      const apiBase = "http://localhost:8000/ws";
+      
       function ajax(method, url, data, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open(method, apiBase + url, true);
