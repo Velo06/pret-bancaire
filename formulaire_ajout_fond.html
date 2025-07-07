@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p id="etat_fond_actuelle"></p>
+    <div>
+      <input type="number" id="montant" placeholder="montant" />
+      <button onclick="ajoutFond()">Mettre a jour fond</button>
+    </div>
+
+    <script>
+      const apiBase = "http://localhost:8000";
+
+      function ajax(method, url, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, apiBase + url, true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            callback(JSON.parse(xhr.responseText));
+          }
+        };
+        xhr.send(data);
+      }
+
+      function ajoutFond() {
+        const montant = document.getElementById("montant").value;
+        const data = `montant=${encodeURIComponent(montant)}`;
+
+        ajax("POST", "/creation_fond", data, (response) => {
+          alert(response.message);
+          console.log(response.message);
+          resetForm();
+          etat_fond_actuelle();
+        });
+      }
+
+      function etat_fond_actuelle() {
+        ajax("GET", "/etat_fond", null, (data) => {
+          const soldeElement = document.querySelector("#etat_fond_actuelle");
+          soldeElement.innerHTML = data.solde_actuelle + " Ar";
+        });
+      }
+
+      function resetForm() {
+        document.getElementById("montant").value = "";
+      }
+
+      window.onload = () => {
+        etat_fond_actuelle();
+      };
+    </script>
+  </body>
+</html>
