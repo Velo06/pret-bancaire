@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require 'vendor/autoload.php';
 require 'db.php';
 require 'routes/TypePretRoute.php';
+require 'routes/PretRoute.php';
 
 Flight::route('GET /etudiants', function() {
     $db = getDB();
