@@ -18,6 +18,8 @@ require 'routes/EtablissementFinancier_route.php';
 require  'routes/pret_routes.php';
 require 'routes/remboursement_routes.php';
 require 'routes/TypePret_route.php';
-
+require 'routes/employes_routes.php';
+require 'routes/clients_routes.php'; 
+require 'routes/prets_routes.php';
 
 Flight::start();
