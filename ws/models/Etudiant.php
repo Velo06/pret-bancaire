@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../db.php';
 
 class Etudiant {
     public static function getAll() {
@@ -31,5 +32,6 @@ class Etudiant {
         $db = getDB();
         $stmt = $db->prepare("DELETE FROM etudiant WHERE id = ?");
         $stmt->execute([$id]);
-    }
+    } 
+    
 }

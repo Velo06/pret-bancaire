@@ -100,8 +100,9 @@ h6 {
 .header__nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px 0;
+  gap: 20px;
 }
 
 .header__menu ul {
@@ -179,7 +180,7 @@ h6 {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin: 2rem 0;
+  margin: 2rem 2rem;
 }
 
 .table-header {
