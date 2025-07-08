@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require 'vendor/autoload.php';
 require 'db.php';
+require 'routes/TypePretRoute.php';
+require 'routes/PretRoute.php';
 
 require 'routes/etudiant_routes.php';
 require 'routes/fond_routes.php';

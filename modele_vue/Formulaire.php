@@ -1,4 +1,5 @@
 <!-- formulaire.html -->
+<?php include('Header.html'); ?>
 <div class="form-container">
     <div class="form-header">
         <h3>Demande de Prêt</h3>
