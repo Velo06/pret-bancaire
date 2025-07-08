@@ -1,4 +1,4 @@
-<!-- header.html -->
+<!-- Header.php -->
 <!-- Header Top -->
 <div class="header__top">
     <div class="container">
@@ -11,7 +11,6 @@
             </div>
             <div class="col-lg-4 col-md-4">
                 <div class="header__top__language ms-auto">
-                    <!-- <img src="https://via.placeholder.com/24x24/88C417/ffffff?text=US" alt="Flag"> -->
                     <span>E-BANK</span>
                     <i class="fa fa-angle-down"></i>
                 </div>
@@ -35,11 +34,11 @@
                 <div class="header__nav">
                     <nav class="header__menu">
                         <ul>
-                            <li><a href="formulaire_ajout_fond.php" class="active">Accueil</a></li>
-                            <li><a href="liste-client.php">Clients</a></li>
-                            <li><a href="interetStat.php">Int&eacute;r&ecirc;ts</a></li>
-                            <li><a href="ajout-type-pret.php">Type Prêt</a></li>
-                            <li><a href="RemboursementClient.php">Remboursement client</a></li>
+                            <li><a href="formulaire_ajout_fond.php" class="<?php echo ($activePage == 'accueil') ? 'active' : ''; ?>">Accueil</a></li>
+                            <li><a href="liste-client.php" class="<?php echo ($activePage == 'clients') ? 'active' : ''; ?>">Clients</a></li>
+                            <li><a href="interetStat.php" class="<?php echo ($activePage == 'interets') ? 'active' : ''; ?>">Int&eacute;r&ecirc;ts</a></li>
+                            <li><a href="ajout-type-pret.php" class="<?php echo ($activePage == 'typepret') ? 'active' : ''; ?>">Type Prêt</a></li>
+                            <li><a href="RemboursementClient.php" class="<?php echo ($activePage == 'remboursement') ? 'active' : ''; ?>">Remboursement client</a></li>
                         </ul>
                     </nav>
                     <div class="header__search">

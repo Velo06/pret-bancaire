@@ -1,4 +1,7 @@
-<?php include 'Header.html'; ?>
+<?php 
+  $activePage = 'accueil';
+  include 'Header.php'; 
+?>
 <main class="main-content">
   <div class="container">
     <!-- formulaire_fond_template.html -->

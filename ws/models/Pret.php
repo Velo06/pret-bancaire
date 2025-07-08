@@ -61,8 +61,7 @@ class Pret
                   FROM pret p
                   JOIN type_pret tp ON p.type_pret_id = tp.id
                   JOIN etat_validation ev ON p.id_etat_validation = ev.id
-                  WHERE p.client = ?
-                  AND is_pret_simuler = 0";
+                  WHERE p.client = ?";
         $stmt = $db->prepare($query);
         $stmt->execute([$clientId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

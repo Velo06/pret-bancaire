@@ -1,5 +1,5 @@
 <!-- tableau.html -->
-<?php include('Header.html'); ?>
+<?php include('Header.php'); ?>
 <div class="table-container">
     <div class="table-header">
         <h3>Gestion des Prêts</h3>

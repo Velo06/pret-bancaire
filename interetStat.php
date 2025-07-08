@@ -1,4 +1,7 @@
-<?php include 'Header.html'; ?>
+<?php 
+    $activePage = 'interets';
+    include 'Header.php'; 
+?>
 <main class="main-content">
     <div class="container">
         <div class="form-header text-center mb-4">
