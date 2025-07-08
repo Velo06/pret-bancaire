@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../controllers/EtudiantController.php';
+require_once __DIR__ . '/../db.php';
 
 Flight::route('GET /etat_fond', function () {
     $db = getDB();

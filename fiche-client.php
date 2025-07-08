@@ -69,7 +69,7 @@
             <div class="table-container">
                 <div class="table-header">
                     <h3>Fiche Client</h3>
-                    <button onclick="window.location.href='liste-client.html'" class="btn-primary-custom">
+                    <button onclick="window.location.href='liste-client.php'" class="btn-primary-custom">
                         <i class="fas fa-arrow-left"></i> Retour
                     </button>
                 </div>
@@ -272,7 +272,7 @@
         }
 
         function nouveauPret() {
-            window.location.href = `nouveau-pret.html?clientId=${clientId}`;
+            window.location.href = `PretCreationClient.php?clientId=${clientId}`;
         }
 
         function voirDetailsPret(pretId) {
