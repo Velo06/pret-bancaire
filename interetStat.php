@@ -1,4 +1,4 @@
-<?php include 'header.html'; ?>
+<?php include 'Header.html'; ?>
 <main class="main-content">
     <div class="container">
         <div class="form-header text-center mb-4">
@@ -7,10 +7,6 @@
         </div>
         <main class="main-content">
             <div class="container">
-                <div class="form-header text-center">
-                    <h3>Tableau des intérêts mensuels</h3>
-                    <p>Statistiques des intérêts générés par mois</p>
-                </div>
 
                 <div class="row mb-4">
                     <div class="col">
