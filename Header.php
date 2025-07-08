@@ -1,119 +1,93 @@
-<!-- Header.php -->
-<!-- Header Top -->
-<div class="header__top">
+<!-- header.html -->
+<!-- ✅ En-tête supérieur -->
+<div class="header__top bg-light py-2">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-8 col-md-8">
         <div class="header__top__widget">
-          <ul>
+          <ul class="list-inline mb-0">
+            <!-- Tu peux ajouter ici des infos utiles (email, contact, etc.) -->
           </ul>
         </div>
       </div>
-      <div class="col-lg-4 col-md-4">
-        <div class="header__top__language ms-auto">
-          <span>E-BANK</span>
+      <div class="col-lg-4 col-md-4 text-end">
+        <div class="header__top__language">
+          <span class="fw-bold text-dark"> E-BANK</span>
           <i class="fa fa-angle-down"></i>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-4 col-md-4">
-    <div class="header__top__language ms-auto">
-      <!-- <img src="https://via.placeholder.com/24x24/88C417/ffffff?text=US" alt="Flag"> -->
-      <span>E-BANK</span>
-      <i class="fa fa-angle-down"></i>
-    </div>
-  </div>
-</div>
-</div>
 </div>
 
-<!-- Header Principal -->
-<!-- Header Principal -->
-<header class="header">
+<!-- ✅ Header principal -->
+<header class="header border-bottom">
   <link rel="stylesheet" href="style/style.css">
 
   <div class="container">
-    <div class="row align-items-center">
+    <div class="row align-items-center py-3">
       <div class="col-lg-3 col-md-3">
         <div class="header__logo">
-          <!-- <a href="#"><img src="https://via.placeholder.com/150x50/88C417/ffffff?text=LOANDAY" alt="Loanday"></a> -->
+          <!-- <a href="#"><img src="https://via.placeholder.com/150x50/88C417/ffffff?text=LOANDAY" alt="Logo"></a> -->
         </div>
       </div>
+
       <div class="col-lg-9 col-md-9">
-        <div class="header__nav">
+        <div class="header__nav d-flex justify-content-between align-items-center">
+          <!-- ✅ Menu de navigation -->
           <nav class="header__menu">
-            <ul>
-              <li><a href="formulaire_ajout_fond.php" class="<?php echo ($activePage == 'accueil') ? 'active' : ''; ?>">Accueil</a></li>
-              <li><a href="liste-client.php" class="<?php echo ($activePage == 'clients') ? 'active' : ''; ?>">Clients</a></li>
-              <li><a href="interetStat.php" class="<?php echo ($activePage == 'interets') ? 'active' : ''; ?>">Int&eacute;r&ecirc;ts</a></li>
-              <li><a href="ajout-type-pret.php" class="<?php echo ($activePage == 'typepret') ? 'active' : ''; ?>">Type Prêt</a></li>
-              <li><a href="RemboursementClient.php" class="<?php echo ($activePage == 'remboursement') ? 'active' : ''; ?>">Remboursement client</a></li>
+            <ul class="nav">
+              <li class="nav-item">
+                <a href="formulaire_ajout_fond.php" class="nav-link active"> Accueil</a>
+              </li>
+
+              <!-- 👤 Groupe : Clients -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> Clients</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="liste-client.php">Liste des clients</a></li>
+                  <li><a class="dropdown-item" href="fiche-client.php">Fiche client</a></li>
+                </ul>
+              </li>
+
+              <!-- 💳 Groupe : Prêts -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> Prêts</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="PretCreationClient.php">Créer un prêt</a></li>
+                  <li><a class="dropdown-item" href="ajout-type-pret.php">Types de prêts</a></li>
+                  <li><a class="dropdown-item" href="details-pret.php">Détails prêt</a></li>
+                  <li><a class="dropdown-item" href="SimulationPretClient.php">Simulation</a></li>
+                </ul>
+              </li>
+
+              <!-- 💰 Groupe : Financier -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> Suivi financier</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="RemboursementClient.php">Remboursements</a></li>
+                  <li><a class="dropdown-item" href="interetStat.php">Statistiques des intérêts</a></li>
+                  <li><a class="dropdown-item" href="simulationPretAdmin.php">Simulation d'intérêt</a></li>
+                </ul>
+              </li>
+
+              <!-- 🧩 Groupe : Autres -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> Autres</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="Comparaison.php">Comparaison des prêts</a></li>
+                  <li><a class="dropdown-item" href="connexion.html">Connexion</a></li>
+                </ul>
+              </li>
             </ul>
           </nav>
-          <div class="header__search">
+
+          <!-- 🔍 Icône de recherche -->
+          <div class="header__search ms-3">
             <i class="fa fa-search"></i>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-lg-9 col-md-9">
-    <div class="header__nav">
-      <nav class="header__menu">
-        <ul>
-          <li>
-            <a href="formulaire_ajout_fond.php" class="active">Accueil</a>
-          </li>
-
-          <!-- Groupe : Gestion des Clients -->
-          <li class="dropdown">
-            <a href="#">Clients</a>
-            <ul class="dropdown-menu">
-              <li><a href="liste-client.php">Liste des clients</a></li>
-              <li><a href="fiche-client.php">Fiche client</a></li>
-            </ul>
-          </li>
-
-          <!-- Groupe : Prêts -->
-          <li class="dropdown">
-            <a href="#">Prêts</a>
-            <ul class="dropdown-menu">
-              <li><a href="PretCreationClient.php">Créer un prêt</a></li>
-              <li><a href="ajout-type-pret.php">Types de prêts</a></li>
-              <li><a href="details-pret.php">Détails prêt</a></li>
-              <li><a href="simulationPret.php">Simulation</a></li>
-            </ul>
-          </li>
-
-          <!-- Groupe : Financier -->
-          <li class="dropdown">
-            <a href="#">Suivi financier</a>
-            <ul class="dropdown-menu">
-              <li><a href="RemboursementClient.php">Remboursements</a></li>
-              <li>
-                <a href="interetStat.php">Statistiques des intérêts</a>
-              </li>
-              <!-- <li><a href="interets.php">Tableau des intérêts</a></li> -->
-
-              <li><a href="simulationPret.php">Simulation d'interet</a></li>
-            </ul>
-          </li>
-
-          <!-- Groupe : Autres -->
-          <li class="dropdown">
-            <a href="#">Autres</a>
-            <ul class="dropdown-menu">
-              <li><a href="connexion.html">Connexion</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="header__search">
-        <i class="fa fa-search"></i>
-      </div>
-    </div>
-  </div>
   </div>
 </header>
