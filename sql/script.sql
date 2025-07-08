@@ -8,41 +8,8 @@ CREATE TABLE status_clients (
     status_role VARCHAR(255)
 );
 
-<<<<<<< HEAD
 CREATE TABLE clients (
     id INT PRIMARY KEY,
-=======
-CREATE TABLE etudiant (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100),
-    prenom VARCHAR(100),
-    email VARCHAR(100),
-    age INT
-);
-
-CREATE DATABASE pret_bancaire CHARACTER SET utf8mb4;
-
-USE pret_bancaire;
-
-CREATE TABLE IF NOT EXISTS employes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    pseudo VARCHAR(50) NOT NULL UNIQUE,
-    mot_de_passe VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE role_clients (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom_role VARCHAR(255)
-);
-
-CREATE TABLE status_clients (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    status_role VARCHAR(255)
-);
-
-CREATE TABLE clients (
-    id INT AUTO_INCREMENT PRIMARY KEY,
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
     nom VARCHAR(255),
     username VARCHAR(255),
     email VARCHAR(255),
@@ -55,20 +22,12 @@ CREATE TABLE clients (
 );
 
 CREATE TABLE etablissement_financier (
-<<<<<<< HEAD
     id INT PRIMARY KEY,
-=======
-    id INT AUTO_INCREMENT PRIMARY KEY,
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
     solde_actuelle DECIMAL(15,2)
 );
 
 CREATE TABLE type_pret (
-<<<<<<< HEAD
     id INT PRIMARY KEY,
-=======
-    id INT AUTO_INCREMENT PRIMARY KEY,
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
     nom VARCHAR(255) ,
     taux_interet_annuel DECIMAL(5,2),
     duree_max_mois INT,
@@ -76,11 +35,7 @@ CREATE TABLE type_pret (
 );
 
 CREATE TABLE etat_validation (
-<<<<<<< HEAD
     id INT PRIMARY KEY,
-=======
-    id INT AUTO_INCREMENT PRIMARY KEY,
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
     nom_etat_validation VARCHAR(255)
 );
 
@@ -89,11 +44,7 @@ CREATE TABLE historique_emprunt (
 );
 
 CREATE TABLE pret (
-<<<<<<< HEAD
     id INT PRIMARY KEY,
-=======
-    id INT AUTO_INCREMENT PRIMARY KEY,
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
     client INT,
     type_pret_id INT,
     montant_emprunt INT,
@@ -111,20 +62,11 @@ CREATE TABLE historique_remboursement (
   pret_id INT NOT NULL,
   montant_rembourse DECIMAL(15,2) NOT NULL,
   date_remboursement DATETIME DEFAULT CURRENT_TIMESTAMP,
-<<<<<<< HEAD
   
   CONSTRAINT fk_remboursement_pret FOREIGN KEY (pret_id) REFERENCES pret(id) ON DELETE CASCADE
 );
 
 ALTER TABLE `clients` ADD `revenu` DECIMAL(30,3) NOT NULL AFTER `statut`;
-=======
-  etat_remboursement BOOLEAN DEFAULT FALSE,
-  CONSTRAINT fk_remboursement_pret FOREIGN KEY (pret_id) REFERENCES pret(id) ON DELETE CASCADE
-);
-
-INSERT INTO employes (pseudo, mot_de_passe) VALUES 
-('admin', 'admin123');
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
 
 INSERT INTO type_pret (nom, taux_interet_annuel, duree_max_mois, montant_max_pres) VALUES
 ('Prêt Personnel', 0.0500, 60, 10000000),
@@ -134,20 +76,12 @@ INSERT INTO type_pret (nom, taux_interet_annuel, duree_max_mois, montant_max_pre
 ('Prêt Automobile', 0.0450, 72, 30000000);
 
 -- Table role_clients
-<<<<<<< HEAD
 INSERT INTO role_clients (id, nom) VALUES
-=======
-INSERT INTO role_clients (id, nom_role) VALUES
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
 (1, 'Client Standard'),
 (2, 'Client Premium');
 
 -- Table status_clients
-<<<<<<< HEAD
 INSERT INTO status_clients (id, libelle) VALUES
-=======
-INSERT INTO status_clients (id, status_role) VALUES
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
 (1, 'Actif'),
 (2, 'Inactif'),
 (3, 'Suspendu');
@@ -164,64 +98,6 @@ INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 (2, 'Validé'),
 (3, 'Rejeté');
 
-<<<<<<< HEAD
 INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 (4, 'Remboursé partiellement'),
 (5, 'Remboursé totalement');
-=======
--- 1. Prêt Personnel - 5 000 000 Ar sur 36 mois
-INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
-VALUES (
-    1, -- id du client Rakoto Jean
-    1, -- Prêt Personnel
-    5000000,
-    NOW(),
-    DATE_ADD(NOW(), INTERVAL 36 MONTH),
-    1, -- En attente
-    NOW()
-);
-
--- 2. Prêt Étudiant - 3 000 000 Ar sur 24 mois
-INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
-VALUES (
-    1,
-    3, -- Prêt Étudiant
-    3000000,
-    NOW(),
-    DATE_ADD(NOW(), INTERVAL 24 MONTH),
-    1,
-    NOW()
-);
-
--- 3. Micro-crédit - 800 000 Ar sur 10 mois
-INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
-VALUES (
-    1,
-    4, -- Micro-crédit
-    800000,
-    NOW(),
-    DATE_ADD(NOW(), INTERVAL 10 MONTH),
-    1,
-    NOW()
-);
-
-INSERT INTO etablissement_financier (solde_actuelle) VALUES (1000000000);
-ALTER TABLE pret MODIFY montant_emprunt DECIMAL(15,2);
-ALTER TABLE pret ADD COLUMN taux_assurance_annuel DECIMAL(5,2) DEFAULT 0;
-
-INSERT INTO pret (
-  client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation,taux_assurance_annuel
-)
-VALUES (
-  2,                -- client id
-  3,                -- type_pret_id (Prêt Étudiant)
-  3000000,          -- montant_emprunt
-  NOW(),            -- date_debut
-  DATE_ADD(NOW(), INTERVAL 48 MONTH),  -- date_fin (4 ans plus tard)
-  1,                -- id_etat_validation (1 = En attente)
-  NOW(),
-  0.02
-);
-
-ALTER TABLE pret ADD COLUMN delai_premier_remboursement_mois INT DEFAULT 0;
->>>>>>> 5c0d331bbbab05ed967c5bb68a697fa3aeb116c0
