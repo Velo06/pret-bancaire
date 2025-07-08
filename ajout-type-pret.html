@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ajout type de pr&ecirc;t</title>
+  </head>
+  <body>
+    <h1>Ajout type de pr&ecirc;t</h1>
+    <span id="nomError" class="error-message"></span>
+        <input type="hidden" id="id" />
+        <div>
+            <label for="nom">Nom de pr&ecirc;t</label>
+            <input type="text" name="nomTypePret" id="nom" placeholder="ex. Prêt immobilier" required>
+        </div>
+        <div>
+            <label for="tauxInteret">Taux d'int&eacute;r&ecir;t annuel</label>
+            <input type="number" name="tauxInteret" id="tauxInteret" step="0.01" min="0" max="100" placeholder="ex. 5,86%">%
+        </div>
+        <div>
+            <label for="dureeMax">Dur&eacute; maximum</label>
+            <input type="number" name="dureeMax" id="dureeMax" placeholder="ex. 8 mois" min="0" required>
+        </div>
+        <div>
+            <label for="montantMax">Montant maximum</label>
+            <input type="number" name="montantMax" id="montantMax" step="0.01" placeholder="ex. 1.000.000 Ar" min="0" max="999999999999999" required>
+        </div>
+        <button onclick="ajouter()">Ajouter</button>
+    <script>
+      const apiBase = "http://localhost:8000/ws";
+      
+      function ajax(method, url, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, apiBase + url, true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            callback(JSON.parse(xhr.responseText));
+          }
+        };
+        xhr.send(data);
+      }
+      function ajouter() {
+        let isValid = true;
+        const nom = document.getElementById("nom").value;
+        const tauxInteret = document.getElementById("tauxInteret").value;
+        const dureeMax = document.getElementById("dureeMax").value;
+        const montantMax = document.getElementById("montantMax").value;
+        if (!nom || !tauxInteret || !dureeMax || !montantMax) {
+            document.getElementById("nomError").textContent = "Les champs doivent être tous remplis.";
+            isValid = false;
+        } 
+        const tauxNum = parseInt(tauxInteret);
+        const dureeNum = parseFloat(dureeMax);
+        const montantNum = parseFloat(montantMax);
+        if (tauxNum < 0 || dureeNum < 0 || montantNum < 0) {
+            document.getElementById("nomError").textContent = "Les champs numériques ne doivent pas être négatifs.";
+            isValid = false;
+        }
+        if (tauxNum > 100) {
+            document.getElementById("nomError").textContent = "Le taux d'intérêt ne doit pas dépasser 100%.";
+            isValid = false;
+        }
+        if (!/^\d+(\.\d{1,2})?$/.test(montantMax) || !/^\d+(\.\d{1,2})?$/.test(tauxInteret)) {
+            document.getElementById("nomError").textContent = "Taux d'intérêt et montant: Maximum 2 chiffres après la virgule.";
+            isValid = false;
+        }
+        const data = new URLSearchParams();
+        data.append('nom', nom);
+        data.append('tauxInteret', tauxInteret);
+        data.append('dureeMax', dureeMax);
+        data.append('montantMax', montantMax);
+        if(isValid) {
+            ajax("POST", "/type-pret", data.toString(), (response) => {
+                alert(response.message);
+                resetForm();
+            });
+        }
+    }
+    function resetForm() {
+        document.getElementById("id").value = "";
+        document.getElementById("nom").value = "";
+        document.getElementById("tauxInteret").value = "";
+        document.getElementById("dureeMax").value = "";
+        document.getElementById("montantMax").value = "";
+      }
+    </script>
+  </body>
+</html>

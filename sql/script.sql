@@ -1,15 +1,18 @@
+CREATE DATABASE etablissement_financier;
+USE etablissement_financier;
+
 CREATE TABLE role_clients (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom_role VARCHAR(255)
 );
 
 CREATE TABLE status_clients (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     status_role VARCHAR(255)
 );
 
 CREATE TABLE clients (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255),
     username VARCHAR(255),
     email VARCHAR(255),
@@ -22,12 +25,12 @@ CREATE TABLE clients (
 );
 
 CREATE TABLE etablissement_financier (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     solde_actuelle DECIMAL(15,2)
 );
 
 CREATE TABLE type_pret (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) ,
     taux_interet_annuel DECIMAL(5,2),
     duree_max_mois INT,
@@ -35,7 +38,7 @@ CREATE TABLE type_pret (
 );
 
 CREATE TABLE etat_validation (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nom_etat_validation VARCHAR(255)
 );
 
@@ -44,7 +47,7 @@ CREATE TABLE historique_emprunt (
 );
 
 CREATE TABLE pret (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     client INT,
     type_pret_id INT,
     montant_emprunt INT,
@@ -56,9 +59,10 @@ CREATE TABLE pret (
     FOREIGN KEY (type_pret_id) REFERENCES type_pret(id),
     FOREIGN KEY (id_etat_validation) REFERENCES etat_validation(id)
 );
+ALTER TABLE pret ADD date_validation TIMESTAMP;
 
 CREATE TABLE historique_remboursement (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY AUTO_INCREMENT,
   pret_id INT NOT NULL,
   montant_rembourse DECIMAL(15,2) NOT NULL,
   date_remboursement DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -76,12 +80,12 @@ INSERT INTO type_pret (nom, taux_interet_annuel, duree_max_mois, montant_max_pre
 ('Prêt Automobile', 0.0450, 72, 30000000);
 
 -- Table role_clients
-INSERT INTO role_clients (id, nom) VALUES
+INSERT INTO role_clients (id, nom_role) VALUES
 (1, 'Client Standard'),
 (2, 'Client Premium');
 
 -- Table status_clients
-INSERT INTO status_clients (id, libelle) VALUES
+INSERT INTO status_clients (id, status_role) VALUES
 (1, 'Actif'),
 (2, 'Inactif'),
 (3, 'Suspendu');
