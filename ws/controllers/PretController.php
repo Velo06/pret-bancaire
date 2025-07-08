@@ -5,23 +5,74 @@ require_once __DIR__ . '/../models/Remboursement.php';
 require_once __DIR__ . '/../models/PretModel.php';
 require_once __DIR__.'/../models/PDF.php';
 
-class PretController {
-    public static function getByClientId($clientId) {
+class PretController
+{
+
+    public static function updatePretSimule($id)
+    {
+        $client = Flight::request()->data->client;
+        $typePretId = Flight::request()->data->type_pret_id;
+        $montant = Flight::request()->data->montant_emprunt;
+        $dateDebut = Flight::request()->data->date_debut;
+
+        if (Pret::updatePretSimule($id, $client, $typePretId, $montant, $dateDebut)) {
+            Flight::json(['success' => true, 'message' => 'Prêt simulé mis à jour avec succès']);
+        } else {
+            Flight::json(['success' => false, 'message' => 'Erreur lors de la mise à jour'], 500);
+        }
+    }
+
+    public static function getPretSimuleById($id)
+    {
+        $pret = Pret::getPretSimuleById($id);
+        if ($pret) {
+            Flight::json($pret);
+        } else {
+            Flight::json(['message' => 'Prêt simulé non trouvé'], 404);
+        }
+    }
+
+
+    public static function deletePretSimule($id)
+    {
+        if (Pret::deletePretSimule($id)) {
+            Flight::json(['success' => true, 'message' => 'Prêt simulé supprimé avec succès']);
+        } else {
+            Flight::json(['success' => false, 'message' => 'Erreur lors de la suppression'], 500);
+        }
+    }
+
+    public static function getAllPret($clientId)
+    {
+        $prets = Pret::getAllPret();
+        Flight::json($prets);
+    }
+
+    public static function getAllPretSimuler()
+    {
+        $prets = Pret::getAllPretSimuler();
+        Flight::json($prets);
+    }
+
+    public static function getByClientId($clientId)
+    {
         $prets = Pret::getByClientId($clientId);
         Flight::json($prets);
     }
 
-    public static function getDetails($pretId) {
+    public static function getDetails($pretId)
+    {
         $pret = Pret::getPretDetails($pretId);
         if (!$pret) {
             Flight::halt(404, json_encode(['message' => 'Prêt non trouvé']));
         }
-        
-        $pret['historique_remboursements'] = Remboursement::getRemboursementsByPret($pretId);
+
+        $pret['historique_remboursements'] = Rembourssement::getRemboursementsByPret($pretId);
         Flight::json($pret);
     }
 
-    public static function validerPret($pretId) {
+    public static function validerPret($pretId)
+    {
         $pret = Pret::getPretDetails($pretId);
         if (!$pret) {
             Flight::halt(404, json_encode(['success' => false, 'message' => 'Prêt non trouvé']));
@@ -29,14 +80,14 @@ class PretController {
 
         if (!EtablissementFinancier::checkSoldeSuffisant($pret['montant_emprunt'])) {
             Flight::halt(400, json_encode([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Solde insuffisant pour valider ce prêt'
             ]));
         }
 
         $db = getDB();
         $db->beginTransaction();
-    
+
         try {
             $debited = EtablissementFinancier::debiterSolde($pret['montant_emprunt']);
             if (!$debited) {
@@ -54,33 +105,33 @@ class PretController {
             $taux = (float)$pret['taux_interet_annuel'];
             $interval = $dateDebut->diff($dateFin);
             $dureeMois = $interval->y * 12 + $interval->m;
-        
-        // Si la durée est inférieure à 1 mois, on met au moins 1 mois
-        $dureeMois = max(1, $dureeMois); 
-            
-            Remboursement::planifierRemboursements(
+
+            // Si la durée est inférieure à 1 mois, on met au moins 1 mois
+            $dureeMois = max(1, $dureeMois);
+
+            Rembourssement::planifierRemboursements(
                 $pretId,
                 $montant,
                 $taux,
                 $dureeMois
             );
-    
+
             $db->commit();
-    
+
             Flight::json([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Prêt validé et solde débité avec succès',
                 'nouveau_solde' => EtablissementFinancier::getSoldeActuel()
             ]);
         } catch (Exception $e) {
             $db->rollBack();
             Flight::halt(500, json_encode([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Erreur lors de la validation: ' . $e->getMessage()
             ]));
         }
     }
-    
+
     public static function createPret()
     {
         $data = Flight::request()->data;
@@ -92,22 +143,23 @@ class PretController {
             return;
         }
 
-        if (Pret::clientADejaPret($db, $data->client, $data->type_pret_id) > 0) {
-            Flight::halt(400, json_encode(['message' => 'Le client possède déjà un prêt actif de ce type']));
-        }
+        // if (Pret::clientADejaPret($db, $data->client, $data->type_pret_id) > 0) {
+        //     Flight::halt(400, json_encode(['message' => 'Le client possède déjà un prêt actif de ce type']));
+        // }
 
         $revenu = Pret::getRevenuClient($db, $data->client);
         if (!$revenu) {
             Flight::halt(404, json_encode(['message' => 'Client introuvable']));
         }
 
-        $plafond = $revenu * 0.33;
-        if ($data->montant_emprunt > $plafond) {
-            Flight::json(['message' => 'Le montant demandé dépasse 33% du revenu du client']);
-            return;
-        }
+        // $plafond = $revenu * 0.33;
+        // if ($data->montant_emprunt > $plafond) {
+        //     Flight::json(['message' => 'Le montant demandé dépasse 33% du revenu du client']);
+        //     return;
+        // }
 
-        $pretId = Pret::creerPret($db, $data->client, $data->type_pret_id, $data->montant_emprunt, $data->date_debut);
+        $pretId = Pret::creerPret($db, $data->client, $data->type_pret_id, $data->montant_emprunt, $data->date_debut, $data->date_fin, $data->is_pret_simulation );
+        
         Pret::mettreAJourSolde($db, $data->montant_emprunt);
 
         Flight::json(['message' => 'Prêt créé avec succès', 'id' => $pretId]);
