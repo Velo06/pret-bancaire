@@ -79,6 +79,34 @@ ALTER TABLE historique_remboursement ADD etat_remboursement BOOLEAN DEFAULT FALS
 
 ALTER TABLE `clients` ADD `revenu` DECIMAL(30,3) NOT NULL AFTER `statut`;
 
+CREATE TABLE table_pret_comparatif (
+  id INT AUTO_INCREMENT PRIMARY KEY AUTO_INCREMENT,
+  pret_id INT NOT NULL,
+  CONSTRAINT fk_pret FOREIGN KEY (pret_id) REFERENCES pret(id) ON DELETE CASCADE
+);
+
+CREATE TABLE pret_a_comparer (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    client INT NOT NULL,
+    type_pret_id INT NOT NULL,
+    montant_emprunt INT NOT NULL,
+    date_debut TIMESTAMP NOT NULL,
+    date_fin TIMESTAMP NULL,
+    id_etat_validation INT NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    mensualite DECIMAL(15,2) NOT NULL,
+    assurance_mensuelle DECIMAL(15,2) NOT NULL,
+    total_interets DECIMAL(15,2) NOT NULL,
+    total_assurances DECIMAL(15,2) NOT NULL,
+    montant_total_rembourse DECIMAL(15,2) NOT NULL,
+
+    FOREIGN KEY (client) REFERENCES clients(id),
+    FOREIGN KEY (type_pret_id) REFERENCES type_pret(id),
+    FOREIGN KEY (id_etat_validation) REFERENCES etat_validation(id)
+);
+
+
 INSERT INTO type_pret (nom, taux_interet_annuel, duree_max_mois, montant_max_pres) VALUES
 ('Prêt Personnel', 0.0500, 60, 10000000),
 ('Prêt Immobilier', 0.0350, 240, 100000000),
