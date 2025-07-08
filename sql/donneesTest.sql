@@ -10,3 +10,31 @@ date_creation, date_validation
 (5, 5, 5, 15000000, '2025-04-01 00:00:00', '2025-12-01 00:00:00', 2, '2025-03-28 00:00:00', '2025-04-01 00:00:00'),
 (6, 2, 1, 8000000, '2025-04-10 00:00:00', '2025-11-10 00:00:00', 2, '2025-04-05 00:00:00', '2025-04-10 00:00:00'),
 (7, 3, 4, 600000, '2025-05-01 00:00:00', '2025-12-01 00:00:00', 2, '2025-04-25 00:00:00', '2025-05-01 00:00:00');
+
+INSERT INTO historique_remboursement (pret_id, montant_rembourse, date_remboursement, etat_remboursement) VALUES
+-- Remboursements pour le prêt 1
+(1, 500000.00, '2025-05-05', TRUE),
+(1, 500000.00, '2025-06-05', TRUE),
+(1, 500000.00, '2025-07-05', TRUE),
+
+-- Remboursements pour le prêt 2
+(2, 1000000.00, '2025-06-10', TRUE),
+(2, 1000000.00, '2025-07-10', TRUE),
+
+-- Remboursements pour le prêt 3
+(3, 300000.00, '2025-07-20', TRUE);
+
+INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation, date_validation, taux_assurance_annuel, delai_premier_remboursement_mois)
+VALUES
+(1, 1, 5000000.00, '2024-12-01 00:00:00', '2025-11-30 00:00:00', 2, '2024-11-20 00:00:00', '2024-12-01 00:00:00', 0.00, 0),
+(2, 1, 10000000.00, '2025-01-01 00:00:00', '2025-12-31 00:00:00', 2, '2024-12-20 00:00:00', '2025-01-01 00:00:00', 0.00, 0),
+(3, 2, 3000000.00, '2025-02-15 00:00:00', '2025-08-14 00:00:00', 2, '2025-02-01 00:00:00', '2025-02-15 00:00:00', 0.00, 0);
+
+-- Insertion remboursements
+INSERT INTO historique_remboursement (pret_id, montant_rembourse, date_remboursement, etat_remboursement)
+VALUES
+(8, 400000.00, '2025-01-05 00:00:00', TRUE),
+(8, 400000.00, '2025-02-05 00:00:00', TRUE),
+(9, 800000.00, '2025-02-10 00:00:00', TRUE),
+(10, 500000.00, '2025-03-01 00:00:00', TRUE),
+(9, 800000.00, '2025-03-10 00:00:00', TRUE);
