@@ -1,6 +1,10 @@
-GET /list_pret_simuler', ['PretComparaisonController
+<?php include 'Header.html'; ?>
 
-<?php include 'header.html'; ?>
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet" />
+
+
 <main class="main-content">
     <div class="container mt-5">
         <h3 class="mb-4">Liste des prêts simulés</h3>
@@ -10,7 +14,7 @@ GET /list_pret_simuler', ['PretComparaisonController
         </div>
 
         <div class="text-center mt-4">
-            <button id="btn-compare" class="btn btn-primary" disabled onclick="comparerPrets()">⚖️ Comparer les prêts sélectionnés</button>
+            <button id="btn-compare" class="btn btn-primary" disabled onclick="comparerPrets()"> Comparer les prêts sélectionnés</button>
         </div>
     </div>
 
