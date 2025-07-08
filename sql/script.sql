@@ -1,5 +1,12 @@
 CREATE DATABASE etablissement_financier;
 USE etablissement_financier;
+
+CREATE TABLE employes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(100),
+    mot_de_passe VARCHAR(25)
+);
+INSERT INTO employes(pseudo, mot_de_passe) VALUES('admin','admin123');
  
 CREATE TABLE role_clients (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -95,12 +102,12 @@ INSERT INTO status_clients (id, status_role) VALUES
 (2, 'Inactif'),
 (3, 'Suspendu');
 
-INSERT INTO clients (id, nom, username, email, telephone, date_inscription, role, statut) VALUES
-(1, 'Rakoto Jean', 'rakotoj', 'jean.rakoto@example.com', '0321234567', NOW(), 1, 1),
-(2, 'Rasoanaivo Lea', 'lea.rasoa', 'lea.r@example.com', '0349876543', NOW(), 2, 1),
-(3, 'Andrianina Marc', 'marc.andry', 'marc.a@example.com', '0331239876', NOW(), 1, 2),
-(4, 'Rabe Alice', 'alice.rabe', 'alice.r@example.com', '0321122334', NOW(), 2, 1),
-(5, 'Randrianarivo Kevin', 'kevin.randria', 'kevin.r@example.com', '0344455667', NOW(), 1, 3);
+INSERT INTO clients (id, nom, username, email, telephone, date_inscription, role, statut,revenu) VALUES
+(1, 'Rakoto Jean', 'rakotoj', 'jean.rakoto@example.com', '0321234567', NOW(), 1, 1,1000000),
+(2, 'Rasoanaivo Lea', 'lea.rasoa', 'lea.r@example.com', '0349876543', NOW(), 2, 1,1200000),
+(3, 'Andrianina Marc', 'marc.andry', 'marc.a@example.com', '0331239876', NOW(), 1, 2,800000),
+(4, 'Rabe Alice', 'alice.rabe', 'alice.r@example.com', '0321122334', NOW(), 2, 1,2000000),
+(5, 'Randrianarivo Kevin', 'kevin.randria', 'kevin.r@example.com', '0344455667', NOW(), 1, 3,600000);
 
 INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 (1, 'En attente'),
@@ -110,3 +117,6 @@ INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 INSERT INTO etat_validation (id, nom_etat_validation) VALUES
 (4, 'Remboursé partiellement'),
 (5, 'Remboursé totalement');
+
+INSERT INTO etablissement_financier (solde_actuelle,nom) VALUES
+(0, 'E-Banque');
