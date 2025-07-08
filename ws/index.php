@@ -24,5 +24,6 @@ require 'routes/employes_routes.php';
 require 'routes/clients_routes.php'; 
 require 'routes/prets_routes.php';
 require 'routes/interet_routes.php';
+require 'routes/montant_route.php';
 
 Flight::start();
