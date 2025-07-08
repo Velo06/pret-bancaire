@@ -12,32 +12,76 @@
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Styles améliorés pour cette page */
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
         .client-form {
             background: var(--white);
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin: 2rem 0;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
         
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         
         .form-actions {
+            display: flex;
+            gap: 1rem;
             margin-top: 1.5rem;
         }
         
-        .action-buttons button {
-            margin-right: 0.5rem;
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
         }
         
         .btn-sm {
             padding: 0.4rem 0.8rem;
             font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
@@ -45,68 +89,66 @@
 
     <div class="main-content">
         <div class="container">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>Gestion des Clients</h3>
-                    <button class="btn-primary-custom" onclick="resetFormClient()">
-                        <i class="fas fa-plus"></i> Nouveau Client
+            <div class="table-header">
+                <h3>Gestion des Clients</h3>
+                <button class="btn-primary-custom" onclick="resetFormClient()">
+                    <i class="fas fa-plus"></i> Nouveau Client
+                </button>
+            </div>
+            
+            <div class="client-form">
+                <input type="hidden" id="id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nom">Nom complet</label>
+                        <input type="text" id="nom" class="form-control-custom" placeholder="Nom complet">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input type="text" id="username" class="form-control-custom" placeholder="Username">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control-custom" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">Téléphone</label>
+                        <input type="text" id="telephone" class="form-control-custom" placeholder="Téléphone">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button onclick="ajouterOuModifierClient()" class="btn-primary-custom">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                    <button onclick="resetFormClient()" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i> Annuler
                     </button>
                 </div>
-                
-                <div class="client-form">
-                    <input type="hidden" id="id">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nom">Nom complet</label>
-                            <input type="text" id="nom" class="form-control-custom" placeholder="Nom complet">
-                        </div>
-                        <div class="form-group">
-                            <label for="username">Nom d'utilisateur</label>
-                            <input type="text" id="username" class="form-control-custom" placeholder="Username">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" class="form-control-custom" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <label for="telephone">Téléphone</label>
-                            <input type="text" id="telephone" class="form-control-custom" placeholder="Téléphone">
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button onclick="ajouterOuModifierClient()" class="btn-primary-custom">
-                            <i class="fas fa-save"></i> Enregistrer
-                        </button>
-                        <button onclick="resetFormClient()" class="btn btn-outline-secondary">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="table-responsive">
-                    <table class="custom-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nom</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Téléphone</th>
-                                <th>Rôle</th>
-                                <th>Statut</th>
-                                <th>Date Inscription</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-clients">
-                            <!-- Les clients seront chargés ici -->
-                        </tbody>
-                    </table>
-                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Rôle</th>
+                            <th>Statut</th>
+                            <th>Date Inscription</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-clients">
+                        <!-- Les clients seront chargés ici -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

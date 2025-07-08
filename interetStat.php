@@ -3,32 +3,30 @@
     include 'Header.php'; 
 ?>
 <main class="main-content">
-    <div class="container">
-        <div class="form-header text-center mb-4">
-            <h3>Tableau des intérêts mensuels</h3>
-            <p>Statistiques des intérêts générés par période</p>
-        </div>
-
-        <div class="form-row form-filtre align-center">
-            <div class="form-group">
-                <label for="mois_debut">Date début :</label>
-                <input type="date" id="mois_debut" class="form-control-custom" />
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+        <div class="form-container" style="margin: 2rem 0;">
+            <div class="form-header text-center mb-4">
+                <h3>Tableau des intérêts mensuels</h3>
+                <p>Statistiques des intérêts générés par période</p>
             </div>
-            <div class="form-group">
-                <label for="mois_fin">Date fin :</label>
-                <input type="date" id="mois_fin" class="form-control-custom" />
+
+            <div class="form-row form-filtre align-center" style="max-width: 800px; margin: 0 auto 2rem;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="mois_debut">Date début :</label>
+                    <input type="date" id="mois_debut" class="form-control-custom" style="width: 100%;"/>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="mois_fin">Date fin :</label>
+                    <input type="date" id="mois_fin" class="form-control-custom" style="width: 100%;"/>
+                </div>
+                <div class="form-group filtre-btn">
+                    <button class="btn-primary-custom" onclick="chargerDonnees()" style="min-width: 120px;">Filtrer</button>
+                </div>
             </div>
-            <div class="form-group filtre-btn">
-                <button class="btn-primary-custom" onclick="chargerDonnees()">Filtrer</button>
-            </div>
-        </div>
 
-
-
-        <!-- Tableau des résultats -->
-        <div class="table-container">
-            <div class="table-responsive">
-                <table class="custom-table">
+            <!-- Tableau des résultats -->
+            <div class="table-container" style="overflow-x: auto;">
+                <table class="custom-table" style="width: 100%;">
                     <thead>
                         <tr>
                             <th>ID Prêt</th>
@@ -47,16 +45,16 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <!-- Graphique -->
-        <div class="mt-4 p-4">
-            <canvas id="graph-interets" height="100"></canvas>
-        </div>
+            <!-- Graphique -->
+            <div style="margin-top: 2rem; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <canvas id="graph-interets" height="100"></canvas>
+            </div>
 
-        <!-- Bouton retour -->
-        <div class="form-actions mt-4">
-            <button class="btn btn-outline-secondary" onclick="window.history.back()">← Retour</button>
+            <!-- Bouton retour -->
+            <div class="form-actions" style="margin-top: 2rem; text-align: center;">
+                <button class="btn btn-outline-secondary" onclick="window.history.back()">← Retour</button>
+            </div>
         </div>
     </div>
 </main>
