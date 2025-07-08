@@ -39,7 +39,6 @@
     </style>
 </head>
 <body>
-    <?php include('../Header.php'); ?>
 
     <div class="main-content">
         <div class="container">

@@ -1,4 +1,3 @@
-GET /list_pret_simuler', ['PretComparaisonController
 
 <?php include 'header.html'; ?>
 <main class="main-content">
