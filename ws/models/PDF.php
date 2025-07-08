@@ -8,7 +8,7 @@ class PDF extends Fpdf {
     public function generatePretPDF($pretData, $etablissement) {
         $this->AddPage();
 
-        $this->Image(__DIR__.'/../../sql/ebank.png', 10, 5, 25); // chemin, position x, y, largeur (auto hauteur)
+        $this->Image(__DIR__.'/../../sql/ebank.png', 10, 5, 28); // chemin, position x, y, largeur (auto hauteur)
         
         // 1. En-tête
         $this->SetFont('Arial','B',16);
