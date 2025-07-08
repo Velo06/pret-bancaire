@@ -17,22 +17,29 @@
           <label for="clientId">ID Client *</label>
           <input type="number" id="clientId" class="form-control-custom" placeholder="Ex: 101" required />
         </div>
+
+      </div>
+
+      <div class="form-row">
         <div class="form-group">
           <label for="type_pret_id">Type de prêt *</label>
           <select id="type_pret_id" class="form-control-custom" required>
             <option value="">-- Choisir un type de prêt --</option>
           </select>
         </div>
-      </div>
-
-      <div class="form-row">
         <div class="form-group">
           <label for="montant_emprunt">Montant emprunté *</label>
           <input type="number" id="montant_emprunt" class="form-control-custom" placeholder="Ex: 200000" required />
         </div>
+      </div>
+      <div class="form-row">
         <div class="form-group">
           <label for="date_debut">Date de début *</label>
           <input type="date" id="date_debut" class="form-control-custom" required />
+        </div>
+        <div class="form-group">
+          <label for="date_fin">Date de fin *</label>
+          <input type="date" id="date_fin" class="form-control-custom" required />
         </div>
       </div>
 
@@ -77,8 +84,9 @@
       const typePretId = document.getElementById("type_pret_id").value;
       const montant = document.getElementById("montant_emprunt").value;
       const dateDebut = document.getElementById("date_debut").value;
+      const dateFin = document.getElementById("date_fin").value;
 
-      const data = `client=${encodeURIComponent(clientId)}&type_pret_id=${encodeURIComponent(typePretId)}&montant_emprunt=${encodeURIComponent(montant)}&date_debut=${encodeURIComponent(dateDebut)}`;
+      const data = `client=${encodeURIComponent(clientId)}&type_pret_id=${encodeURIComponent(typePretId)}&montant_emprunt=${encodeURIComponent(montant)}&date_debut=${encodeURIComponent(dateDebut)}&date_fin=${encodeURIComponent(dateFin)}&is_pret_simulation=${0}`;
 
       ajax("POST", "/creation_pret", data, (response) => {
         alert(response.message);
@@ -94,6 +102,13 @@
     }
 
     window.onload = () => {
+      // Ajout dynamique idClient
+      const urlParams = new URLSearchParams(window.location.search);
+      const clientId = urlParams.get("clientId");
+      if (clientId) {
+        document.getElementById("clientId").value = clientId;
+      }
+
       chargerSelects();
     };
   </script>
