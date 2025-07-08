@@ -57,6 +57,8 @@ CREATE TABLE pret (
     FOREIGN KEY (id_etat_validation) REFERENCES etat_validation(id)
 );
 
+ALTER TABLE `pret` ADD `is_pret_simuler` BOOLEAN NOT NULL DEFAULT FALSE AFTER `date_creation`;
+
 CREATE TABLE historique_remboursement (
   id INT AUTO_INCREMENT PRIMARY KEY,
   pret_id INT NOT NULL,

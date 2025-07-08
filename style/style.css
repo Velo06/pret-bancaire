@@ -145,6 +145,52 @@ h6 {
   margin-bottom: 20px;
 }
 
+.form-row.form-filtre.align-center {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* espace entre les éléments */
+  flex-wrap: wrap; /* responsive */
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 30px;
+  border-radius: 8px;
+  width: 60%;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: black;
+}
+
 .form-filtre .form-group {
   display: flex;
   flex-direction: column;
@@ -160,10 +206,9 @@ h6 {
 }
 
 .form-filtre .btn-primary-custom {
-    min-width: 120px;
+  min-width: 120px;
   margin-top: 0;
 }
-
 
 .header__menu a:hover::after,
 .header__menu a.active::after {

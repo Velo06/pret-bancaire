@@ -1,8 +1,57 @@
 <?php
 require_once __DIR__ . '/../db.php';
 
-class Pret {
-    public static function getByClientId($clientId) {
+class Pret
+{
+
+    public static function getAllPret()
+    {
+        $db = getDB();
+        $query = "SELECT *
+                  FROM pret 
+                  WHERE is_pret_simuler = 0";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getAllPretSimuler()
+    {
+        $db = getDB();
+        $query = "SELECT *
+                  FROM pret 
+                  WHERE is_pret_simuler = 1";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function updatePretSimule($id, $client, $typePretId, $montant, $dateDebut)
+    {
+        $db = getDB();
+        $stmt = $db->prepare("UPDATE pret 
+                          SET client = ?, type_pret_id = ?, montant_emprunt = ?, date_debut = ?
+                          WHERE id = ? AND is_pret_simuler = 1");
+        return $stmt->execute([$client, $typePretId, $montant, $dateDebut, $id]);
+    }
+
+    public static function deletePretSimule($id)
+    {
+        $db = getDB();
+        $stmt = $db->prepare("DELETE FROM pret WHERE id = ? AND is_pret_simuler = 1");
+        return $stmt->execute([$id]);
+    }
+
+    public static function getPretSimuleById($id)
+    {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT * FROM pret WHERE id = ? AND is_pret_simuler = 1");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getByClientId($clientId)
+    {
         $db = getDB();
         $query = "SELECT 
                     p.*, 
@@ -12,13 +61,15 @@ class Pret {
                   FROM pret p
                   JOIN type_pret tp ON p.type_pret_id = tp.id
                   JOIN etat_validation ev ON p.id_etat_validation = ev.id
-                  WHERE p.client = ?";
+                  WHERE p.client = ?
+                  AND is_pret_simuler = 0";
         $stmt = $db->prepare($query);
         $stmt->execute([$clientId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }   
-    
-    public static function getPretDetails($pretId) {
+    }
+
+    public static function getPretDetails($pretId)
+    {
         $db = getDB();
         $query = "SELECT p.*, 
                          tp.nom as type_pret, 
@@ -35,22 +86,25 @@ class Pret {
         $stmt->execute([$pretId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    
-    public static function updateStatut($pretId, $newStatutId) {
+
+    public static function updateStatut($pretId, $newStatutId)
+    {
         $db = getDB();
         $stmt = $db->prepare("UPDATE pret SET id_etat_validation = ? WHERE id = ?");
         return $stmt->execute([$newStatutId, $pretId]);
     }
-    
-    public static function getHistoriqueRemboursements($pretId) {
+
+    public static function getHistoriqueRemboursements($pretId)
+    {
         $db = getDB();
         $stmt = $db->prepare("SELECT * FROM historique_remboursement WHERE pret_id = ? ORDER BY date_remboursement DESC");
         $stmt->execute([$pretId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function calculerAssuranceMensuelle($montant, $tauxAssurance) {
-        $assurance = $montant * $tauxAssurance;   
+    public static function calculerAssuranceMensuelle($montant, $tauxAssurance)
+    {
+        $assurance = $montant * $tauxAssurance;
         return $assurance / 12;
     }
 
@@ -75,11 +129,11 @@ class Pret {
         return $stmt->fetchColumn();
     }
 
-    public static function creerPret($db, $client, $typePretId, $montant, $dateDebut)
+    public static function creerPret($db, $client, $typePretId, $montant, $dateDebut, $dateFin, $is_pret_simulation)
     {
-        $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, id_etat_validation, date_creation)
-                              VALUES (?, ?, ?, ?, 1, NOW())");
-        $stmt->execute([$client, $typePretId, $montant, $dateDebut]);
+        $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation, is_pret_simuler)
+                              VALUES (?, ?, ?, ?, ?, 1, NOW(), ?)");
+        $stmt->execute([$client, $typePretId, $montant, $dateDebut, $dateFin, $is_pret_simulation]);
         return $db->lastInsertId();
     }
 
