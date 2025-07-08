@@ -72,6 +72,8 @@ ALTER TABLE pret MODIFY montant_emprunt DECIMAL(15,2);
 ALTER TABLE pret ADD COLUMN taux_assurance_annuel DECIMAL(5,2) DEFAULT 0;
 ALTER TABLE pret ADD COLUMN delai_premier_remboursement_mois INT DEFAULT 0;
 
+ALTER TABLE `pret` ADD `is_pret_simuler` BOOLEAN NOT NULL DEFAULT FALSE AFTER `date_creation`;
+
 CREATE TABLE historique_remboursement (
   id INT AUTO_INCREMENT PRIMARY KEY AUTO_INCREMENT,
   pret_id INT NOT NULL,
