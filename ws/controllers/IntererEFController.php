@@ -73,7 +73,7 @@ class IntererEFController
     public static function getInteretEtablissement()
     {
         $db = getDB();
-        $stmt = $db->query("SELECT * FROM pret WHERE id_etat_validation = 2");
+        $stmt = $db->query("SELECT * FROM pret WHERE id_etat_validation = 2 ORDER BY date_debut");
         $prets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $resultat = [];
