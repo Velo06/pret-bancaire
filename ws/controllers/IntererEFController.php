@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../models/EtablissementFinancier.php';
 require_once __DIR__ . '/../models/Pret.php';
 require_once __DIR__ . '/../helpers/Utils.php';
+require_once __DIR__ . '/../models/Simulation.php';
 
 class IntererEFController
 {
@@ -116,6 +117,20 @@ class IntererEFController
         Flight::json($resultat);
     }
 
+    public static function simulerPret()
+    {
+        $data = Flight::request()->data;
+
+        $montant = floatval($data['montant']);
+        $duree = intval($data['duree_mois']);
+        $taux = floatval($data['taux_annuel']);
+        $tauxAssurance = isset($data['assurance']) ? floatval($data['assurance']) : 0;
+        $dateDebut = new DateTime($data['date_debut']);
+
+        $resultat = SimulationModel::calculerPret($montant, $duree, $taux, $tauxAssurance, $dateDebut);
+
+        Flight::json($resultat);
+    }
 
     public static function getInteretEtablissementSimulation()
     {
