@@ -145,6 +145,30 @@ h6 {
   margin-bottom: 20px;
 }
 
+/* Dropdown basic styles */
+.header__menu ul ul {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  z-index: 1000;
+  padding: 10px;
+  list-style: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.header__menu li:hover > ul {
+  display: block;
+}
+
+.header__menu ul ul li {
+  margin: 5px 0;
+}
+
+.header__menu .dropdown > a::after {
+  font-size: 0.7em;
+}
+
+
 .form-row.form-filtre.align-center {
   display: flex;
   justify-content: center;
