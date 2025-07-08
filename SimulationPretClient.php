@@ -54,9 +54,6 @@
         <div class="mt-5">
             <canvas id="graph-interets" height="100"></canvas>
         </div>
-
-        <button class="btn btn-primary mt-4" onclick="simulerPret()">⚙️ Simuler le prêt</button>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -96,11 +93,11 @@
 
                     conteneur.innerHTML = `
                 <h5>Résumé</h5>
-                <p><strong>Mensualité :</strong> ${data.mensualite.toLocaleString()} Ar</p>
-                <p><strong>Assurance mensuelle :</strong> ${data.assurance_mensuelle.toLocaleString()} Ar</p>
-                <p><strong>Total intérêts :</strong> ${data.total_interet.toLocaleString()} Ar</p>
-                <p><strong>Total assurances :</strong> ${data.total_assurance.toLocaleString()} Ar</p>
-                <p><strong>Montant total remboursé :</strong> ${data.total_rembourse.toLocaleString()} Ar</p>
+                <p id = "data-mensualite"><strong>Mensualité :</strong> ${data.mensualite.toLocaleString()} Ar</p>
+                <p id = "data-assurance-mensuelle"><strong>Assurance mensuelle :</strong> ${data.assurance_mensuelle.toLocaleString()} Ar</p>
+                <p id = "data-interet"><strong>Total intérêts :</strong> ${data.total_interet.toLocaleString()} Ar</p>
+                <p id = "data-total-assurance"><strong>Total assurances :</strong> ${data.total_assurance.toLocaleString()} Ar</p>
+                <p id = "data-total-rembourse"><strong>Montant total remboursé :</strong> ${data.total_rembourse.toLocaleString()} Ar</p>
 
                 <button class="btn btn-success mt-4" onclick='enregistrer_pret_simuler(simulationData)'>
                     💾 Enregistrer cette simulation
@@ -202,7 +199,9 @@
                 });
         }
 
-        function enregistrer_pret_simuler(data) {
+        function enregistrer_pret_simuler() {
+            data = simulationData;
+
             const montant = parseFloat(document.getElementById('montant').value);
             const dateDebut = document.getElementById('date_debut').value;
 

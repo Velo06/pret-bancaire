@@ -183,6 +183,48 @@ h6 {
   display: block;
 }
 
+/* Cartes de prêt */
+.card {
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body p {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #444;
+}
+
+.card-body p strong {
+  color: #222;
+}
+
+/* Disposition responsive */
+#comparaison-contenu {
+  row-gap: 30px;
+}
+
+@media (max-width: 767.98px) {
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    text-align: center;
+  }
+}
+
 .header__menu ul ul li {
   margin: 5px 0;
 }

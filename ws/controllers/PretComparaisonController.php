@@ -1,8 +1,10 @@
 <?php
 require_once __DIR__ . '/../models/PretComparaison.php';
 
-class PretComparaisonController {
-    public static function create() {
+class PretComparaisonController
+{
+    public static function create()
+    {
         $data = Flight::request()->data;
 
         // Vérification des champs obligatoires
@@ -17,5 +19,14 @@ class PretComparaisonController {
         // Enregistrement dans la base
         $id = PretComparaison::create($data);
         Flight::json(['message' => 'Prêt enregistré avec succès', 'id' => $id]);
+    }
+
+    //     public static function getAll() {
+    // }
+    public static function listPretSimuler()
+    {
+
+        $Listprets = PretComparaison::getAll();
+        Flight::json($Listprets);
     }
 }
