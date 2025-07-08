@@ -11,6 +11,20 @@ class ComposerStaticInitabb6ebe33cbb979ad3a0d50b308f9c90
         '5b7d984aab5ae919d3362ad9588977eb' => __DIR__ . '/..' . '/mikecao/flight/flight/Flight.php',
     );
 
+    public static $prefixLengthsPsr4 = array (
+        'F' => 
+        array (
+            'Fpdf\\' => 5,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Fpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fpdf/fpdf/src/Fpdf',
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -18,6 +32,8 @@ class ComposerStaticInitabb6ebe33cbb979ad3a0d50b308f9c90
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitabb6ebe33cbb979ad3a0d50b308f9c90::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitabb6ebe33cbb979ad3a0d50b308f9c90::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInitabb6ebe33cbb979ad3a0d50b308f9c90::$classMap;
 
         }, null, ClassLoader::class);

@@ -1,6 +1,6 @@
 CREATE DATABASE etablissement_financier;
 USE etablissement_financier;
-
+ 
 CREATE TABLE role_clients (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nom_role VARCHAR(255)
@@ -28,6 +28,7 @@ CREATE TABLE etablissement_financier (
     id INT PRIMARY KEY AUTO_INCREMENT,
     solde_actuelle DECIMAL(15,2)
 );
+ALTER TABLE etablissement_financier ADD nom VARCHAR(100);
 
 CREATE TABLE type_pret (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -60,6 +61,9 @@ CREATE TABLE pret (
     FOREIGN KEY (id_etat_validation) REFERENCES etat_validation(id)
 );
 ALTER TABLE pret ADD date_validation TIMESTAMP;
+ALTER TABLE pret MODIFY montant_emprunt DECIMAL(15,2);
+ALTER TABLE pret ADD COLUMN taux_assurance_annuel DECIMAL(5,2) DEFAULT 0;
+ALTER TABLE pret ADD COLUMN delai_premier_remboursement_mois INT DEFAULT 0;
 
 CREATE TABLE historique_remboursement (
   id INT AUTO_INCREMENT PRIMARY KEY AUTO_INCREMENT,
@@ -69,6 +73,7 @@ CREATE TABLE historique_remboursement (
   
   CONSTRAINT fk_remboursement_pret FOREIGN KEY (pret_id) REFERENCES pret(id) ON DELETE CASCADE
 );
+ALTER TABLE historique_remboursement ADD etat_remboursement BOOLEAN DEFAULT FALSE;
 
 ALTER TABLE `clients` ADD `revenu` DECIMAL(30,3) NOT NULL AFTER `statut`;
 
