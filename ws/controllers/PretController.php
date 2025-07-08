@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/PretModel.php';
+require_once __DIR__.'/../models/PDF.php';
 
 class PretController {
     public static function getInterets() {
@@ -16,6 +17,31 @@ class PretController {
             'data' => $interets,
             'periode' => ['debut' => $debut, 'fin' => $fin]
         ]);
+    }
+
+    public static function getListePret() {
+        $pret = PretModel::getAll();
+        Flight::json($pret);
+    }
+
+    public static function export($pretId) {
+        try {
+            $pret = PretModel::getPretWithDetails($pretId);
+            $etab = PretModel::getNomEtablissement();
+            
+            if (!$pret) {
+                Flight::json(['error' => 'Prêt non trouvé'], 404);
+                return;
+            }
+
+            $pdf = new PDF();
+            $pdf->generatePretPDF($pret,$etab['nom']);
+            $pdf->Output('D', 'pret_'.$pretId.'.pdf');
+            exit;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            Flight::json(['error' => 'Erreur de génération PDF'], 500);
+        }
     }
     
 }
