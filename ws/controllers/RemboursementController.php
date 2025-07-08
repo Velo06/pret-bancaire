@@ -18,7 +18,6 @@ class RemboursementController
             Flight::halt(404, json_encode(['message' => 'Prêt introuvable', 'pret_id' => $data->pret_id]));
         }
 
-        // Total déjà remboursé
         $total_rembourse = Remboursement::getTotalRembourse($db, $data->pret_id);
         $nouveau_total = $total_rembourse + $montant;
 
@@ -26,14 +25,11 @@ class RemboursementController
             Flight::halt(400, json_encode(['message' => 'Montant remboursé dépasse le montant emprunté']));
         }
 
-        // Insertion remboursement
         Remboursement::enregistrerRemboursement($db, $data->pret_id, $montant);
 
-        // Définir l'état du prêt
         $etat = ($nouveau_total == $pret['montant_emprunt']) ? 5 : 4;
         Remboursement::mettreAJourEtatPret($db, $etat, $data->pret_id);
 
-        // Créditer le solde
         Remboursement::incrementerSoldeEtablissement($db, $montant);
 
         Flight::json(['message' => 'Remboursement effectué avec succès']);

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Pret.php';
 require_once __DIR__ . '/../models/EtablissementFinancier.php';
-require_once __DIR__ . '/../models/Rembourssement.php';
+require_once __DIR__ . '/../models/Remboursement.php';
 
 class PretController {
     public static function getByClientId($clientId) {
@@ -15,7 +15,7 @@ class PretController {
             Flight::halt(404, json_encode(['message' => 'Prêt non trouvé']));
         }
         
-        $pret['historique_remboursements'] = Rembourssement::getRemboursementsByPret($pretId);
+        $pret['historique_remboursements'] = Remboursement::getRemboursementsByPret($pretId);
         Flight::json($pret);
     }
 
@@ -56,7 +56,7 @@ class PretController {
         // Si la durée est inférieure à 1 mois, on met au moins 1 mois
         $dureeMois = max(1, $dureeMois); 
             
-            Rembourssement::planifierRemboursements(
+            Remboursement::planifierRemboursements(
                 $pretId,
                 $montant,
                 $taux,
