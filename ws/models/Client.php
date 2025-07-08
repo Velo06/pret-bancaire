@@ -33,8 +33,8 @@ class Client {
             $data->username, 
             $data->email, 
             $data->telephone, 
-            $data->role, 
-            $data->statut
+            1, 
+            1
         ]);
         return $db->lastInsertId();
     }
