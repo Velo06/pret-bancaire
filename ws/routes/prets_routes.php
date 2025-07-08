@@ -10,4 +10,3 @@ Flight::route('PUT /prets/@id/valider', ['PretController', 'validerPret']);
 
 Flight::route('PUT /pret_simule/@id', ['PretController', 'updatePretSimule']);
 Flight::route('DELETE /pret_simule/@id', ['PretController', 'deletePretSimule']);
-Flight::route('GET /pret_simule/@id', ['PretController', 'getPretSimuleById']);
