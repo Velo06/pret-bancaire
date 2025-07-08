@@ -147,10 +147,10 @@ class PretController
         //     Flight::halt(400, json_encode(['message' => 'Le client possède déjà un prêt actif de ce type']));
         // }
 
-        $revenu = Pret::getRevenuClient($db, $data->client);
-        if (!$revenu) {
-            Flight::halt(404, json_encode(['message' => 'Client introuvable']));
-        }
+        // $revenu = Pret::getRevenuClient($db, $data->client);
+        // if (!$revenu) {
+        //     Flight::halt(404, json_encode(['message' => 'Client introuvable']));
+        // }
 
         // $plafond = $revenu * 0.33;
         // if ($data->montant_emprunt > $plafond) {

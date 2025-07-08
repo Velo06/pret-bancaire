@@ -128,11 +128,11 @@ class Pret
         return $stmt->fetchColumn();
     }
 
-    public static function creerPret($db, $client, $typePretId, $montant, $dateDebut, $dateFin, $is_pret_simulation)
+    public static function creerPret($db, $client, $typePretId, $montant, $dateDebut, $dateFin)
     {
-        $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation, is_pret_simuler)
-                              VALUES (?, ?, ?, ?, ?, 1, NOW(), ?)");
-        $stmt->execute([$client, $typePretId, $montant, $dateDebut, $dateFin, $is_pret_simulation]);
+        $stmt = $db->prepare("INSERT INTO pret (client, type_pret_id, montant_emprunt, date_debut, date_fin, id_etat_validation, date_creation)
+                              VALUES (?, ?, ?, ?, ?, 1, NOW())");
+        $stmt->execute([$client, $typePretId, $montant, $dateDebut, $dateFin]);
         return $db->lastInsertId();
     }
 
