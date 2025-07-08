@@ -1,3 +1,8 @@
+<?php 
+  $activePage = 'typepret';
+  include 'Header.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,7 +20,6 @@
     </style>
 </head>
 <body>
-    <?php include('Header.html'); ?>
 
     <div class="main-content">
         <div class="container">

@@ -1,3 +1,8 @@
+<?php 
+    $activePage = 'interets';
+    include 'Header.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

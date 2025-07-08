@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - E-BANK</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Ajouts spécifiques pour cette page */
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        #loginForm {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="container">
+            <div class="form-container" style="max-width: 500px; margin: 2rem auto;">
+                <div class="form-header">
+                    <h3>Connexion</h3>
+                    <p>Veuillez entrer vos identifiants pour accéder à votre espace</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Nom d'utilisateur *</label>
+                        <input type="text" id="username" class="form-control-custom" placeholder="Ex: antsa" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe *</label>
+                        <div class="password-container">
+                            <input type="password" id="password" class="form-control-custom" placeholder="******" required>
+                            <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                    </div>
+
+                    <div id="message" class="text-center mb-3" style="color: red;"></div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='index.html'">Annuler</button>
+                        <button type="submit" class="btn-primary-custom">Se connecter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiBase = "http://localhost:8000/ws";
+        
+        function ajax(method, url, data, callback) {
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, apiBase + url, true);
+            xhr.setRequestHeader(
+                "Content-Type",
+                "application/x-www-form-urlencoded"
+            );
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            callback(JSON.parse(xhr.responseText));
+                        } catch (e) {
+                            console.error("Erreur JSON:", e);
+                            document.getElementById("message").textContent = "Erreur de traitement des données";
+                        }
+                    } else {
+                        document.getElementById("message").textContent = `Erreur ${xhr.status}: ${xhr.statusText}`;
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById("password");
+            const eyeIcon = document.querySelector(".toggle-password");
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
+            }
+        }
+
+        function seConnecter() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const messageDiv = document.getElementById("message");
+
+            if (!username || !password) {
+                messageDiv.textContent = "Veuillez remplir tous les champs";
+                return;
+            }
+
+            const data = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+            
+            ajax("POST", "/connexion", data, (response) => {
+                if (response.success) {
+                    messageDiv.style.color = "green";
+                    messageDiv.textContent = "Connexion réussie!";
+                    window.location.href = "formulaire_ajout_fond.php";
+                } else {
+                    messageDiv.style.color = "red";
+                    messageDiv.textContent = response.message || "Échec de la connexion";
+                }
+            });
+        }
+
+        // Gestion de la soumission du formulaire
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+            seConnecter();
+        });
+
+        // Permettre la soumission avec Entrée
+        document.getElementById("username").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                seConnecter();
+            }
+        });
+
+        document.getElementById("password").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                seConnecter();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-<?php include 'header.html'; ?>
+<?php include 'Header.php'; ?>
 <main class="main-content">
   <!-- formulaire_pret_template.html -->
   <div class="form-container">

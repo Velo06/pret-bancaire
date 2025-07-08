@@ -1,5 +1,8 @@
+<?php 
+  $activePage = 'remboursement';
+  include 'Header.php'; 
+?>
 <!-- formulaire_remboursement_template.html -->
-<?php include 'header.html'; ?>
 <main class="main-content">
   <div class="container">
     <div class="form-container">

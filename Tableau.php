@@ -1,5 +1,5 @@
 <!-- tableau.html -->
-<?php include 'header.html'; ?>
+<?php include 'Header.php'; ?>
 <main class="main-content">
     <div class="container">
 
