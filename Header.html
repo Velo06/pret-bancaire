@@ -40,6 +40,9 @@
               <li class="nav-item">
                 <a href="formulaire_ajout_fond.php" class="nav-link active"> Accueil</a>
               </li>
+              <li class="nav-item">
+                <a href="montant-dispo.php"> Montant disponible</a>
+              </li>
 
               <!-- 👤 Groupe : Clients -->
               <li class="nav-item dropdown">
