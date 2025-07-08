@@ -272,7 +272,7 @@
         }
 
         function nouveauPret() {
-            window.location.href = `nouveau-pret.html?clientId=${clientId}`;
+            window.location.href = `PretCreationClient.php?clientId=${clientId}`;
         }
 
         function voirDetailsPret(pretId) {
